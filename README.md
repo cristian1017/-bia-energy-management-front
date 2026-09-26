@@ -81,6 +81,11 @@ La URL base se define con `VITE_API_BASE_URL`. El cliente Axios agrega estas rut
 | `POST` | `/ai/analyze` | Iniciar análisis global de IA |
 | `GET` | `/ai/analysis/:meterId` | Consultar el análisis del medidor |
 
+## URLs de producción
+
+- **Frontend:** [https://bia-energy-management-front.vercel.app/](https://bia-energy-management-front.vercel.app/)
+- **Backend API:** [https://bia-energy-management-backend.vercel.app/](https://bia-energy-management-backend.vercel.app/)
+
 ## Requisitos
 
 - Node.js compatible con Vite 8 (por ejemplo, Node 20.19+ o 22.12+).
