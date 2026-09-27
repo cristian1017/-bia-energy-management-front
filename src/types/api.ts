@@ -25,7 +25,7 @@ export interface Anomaly {
   confidence: number;
   reason: string;
   recommended_action: string;
-  status: 'PENDING' | 'RESOLVED' | 'DISMISSED';
+  status: 'PENDING' | 'RESOLVED' | 'DISMISSED' | 'OK';
   detected_at: string;
 }
 

@@ -124,6 +124,7 @@ export function App() {
       <MeterModal
         meterId={selectedMeterId}
         onClose={() => setSelectedMeterId(null)}
+        onAnalysisComplete={loadAllData}
         readings={readings}
       />
     </div>

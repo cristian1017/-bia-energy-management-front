@@ -37,14 +37,17 @@ describe("KpiCards", () => {
     ["unknown", "text-slate-300"],
   ])("shows %s analysis status with its matching color", (status, color) => {
     const { container } = render(
-      <KpiCards summary={createSummary("2026-09-26T15:30:00Z", status)} isLoading={false} />,
+      <KpiCards
+        summary={createSummary("2026-09-26T15:30:00Z", status)}
+        isLoading={false}
+      />,
     );
 
     expect(screen.getByText(status)).toHaveClass(color);
     expect(screen.getByText("Medidores")).toBeInTheDocument();
     expect(screen.getByText("12")).toBeInTheDocument();
     expect(screen.getByText("96%")).toBeInTheDocument();
-    expect(container.textContent).toContain("hora Colombia, UTC-5");
+    expect(container.textContent).toContain("10:30");
   });
 
   it.each([

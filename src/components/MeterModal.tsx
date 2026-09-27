@@ -49,12 +49,14 @@ type ChartMetric = keyof typeof chartMetrics;
 interface MeterModalProps {
   meterId: string | null;
   onClose: () => void;
+  onAnalysisComplete?: () => void | Promise<void>;
   readings: Reading[];
 }
 
 export const MeterModal: React.FC<MeterModalProps> = ({
   meterId,
   onClose,
+  onAnalysisComplete,
   readings,
 }) => {
   const [meterDetail, setMeterDetail] = useState<Meter | null>(null);
@@ -126,8 +128,11 @@ export const MeterModal: React.FC<MeterModalProps> = ({
     try {
       setIsLoadingAnalysis(true);
       setErrorAnalysis(null);
-      const data = await EnergyService.getAiAnalysisByMeterId(id);
+      const data = await EnergyService.getAiAnalysisByMeterId(id, true);
       setAiAnalysis(data);
+      if (data?.status != "OK") {
+        await onAnalysisComplete?.();
+      }
     } catch (err) {
       console.error("Error fetching AI analysis:", err);
       setErrorAnalysis(

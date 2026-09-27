@@ -148,7 +148,7 @@ export const OverviewCharts: React.FC<OverviewChartsProps> = ({
                 Severidad de Diagnósticos IA
               </h3>
               <p className="text-xs text-slate-400">
-                Distribución del estado operativo de la planta
+                Distribución del estado operativo
               </p>
             </div>
           </div>

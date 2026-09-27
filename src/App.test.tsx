@@ -39,10 +39,15 @@ vi.mock("./components/MeterTable", () => ({
 }));
 
 vi.mock("./components/MeterModal", () => ({
-  MeterModal: ({ meterId, onClose }: { meterId: string | null; onClose: () => void }) => (
+  MeterModal: ({ meterId, onClose, onAnalysisComplete }: {
+    meterId: string | null;
+    onClose: () => void;
+    onAnalysisComplete: () => void | Promise<void>;
+  }) => (
     <div>
       <span data-testid="selected-meter">{meterId ?? "none"}</span>
       <button onClick={onClose}>close meter</button>
+      <button onClick={() => void onAnalysisComplete()}>complete meter analysis</button>
     </div>
   ),
 }));
@@ -130,6 +135,20 @@ describe("App", () => {
     await waitFor(() => expect(energyMocks.getDashboardSummary).toHaveBeenCalledTimes(2));
     expect(energyMocks.triggerAiAnalysis).toHaveBeenCalledOnce();
     expect(screen.getByRole("button", { name: "analyze" })).toBeEnabled();
+  });
+
+  it("reloads dashboard data after the meter analysis completes", async () => {
+    const user = userEvent.setup();
+    render(<App />);
+    await screen.findByTestId("kpi-state");
+
+    await user.click(screen.getByRole("button", { name: "complete meter analysis" }));
+
+    await waitFor(() => {
+      expect(energyMocks.getDashboardSummary).toHaveBeenCalledTimes(2);
+      expect(energyMocks.getAnomalies).toHaveBeenCalledTimes(2);
+      expect(energyMocks.getMeterReadings).toHaveBeenCalledTimes(2);
+    });
   });
 
   it("handles initial dashboard errors and clears the loading state", async () => {

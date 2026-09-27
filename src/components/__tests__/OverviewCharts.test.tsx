@@ -103,7 +103,7 @@ describe("OverviewCharts", () => {
 
     expect(screen.getByText("Consumo Comparativo por Medidor")).toBeInTheDocument();
     expect(screen.getByText("Severidad de Diagnósticos IA")).toBeInTheDocument();
-    expect(screen.getByText("Distribución del estado operativo de la planta")).toBeInTheDocument();
+    expect(screen.getByText("Distribución del estado operativo")).toBeInTheDocument();
   });
 
   it("handles an empty data set without anomalies", () => {

@@ -144,16 +144,25 @@ describe("MeterModal", () => {
 
   it("re-evaluates the meter and displays the returned AI anomaly", async () => {
     const user = userEvent.setup();
+    const onAnalysisComplete = vi.fn();
     const aiAnomaly = makeAnomaly("HIGH", "AI detected an overload", 0);
     energyMocks.getAnomaliesByMeterId.mockResolvedValue([makeAnomaly("LOW")]);
     energyMocks.getAiAnalysisByMeterId.mockResolvedValue(aiAnomaly);
-    render(<MeterModal meterId="M-1" onClose={vi.fn()} readings={[]} />);
+    render(
+      <MeterModal
+        meterId="M-1"
+        onClose={vi.fn()}
+        onAnalysisComplete={onAnalysisComplete}
+        readings={[]}
+      />,
+    );
 
     await user.click(screen.getByRole("button", { name: "Re-evaluar" }));
     expect(await screen.findByText("HIGH SEVERITY")).toBeInTheDocument();
     expect(screen.getByText("AI detected an overload")).toBeInTheDocument();
     expect(screen.queryByText("Confianza: 0%")).not.toBeInTheDocument();
-    expect(energyMocks.getAiAnalysisByMeterId).toHaveBeenCalledWith("M-1");
+    expect(energyMocks.getAiAnalysisByMeterId).toHaveBeenCalledWith("M-1", true);
+    expect(onAnalysisComplete).toHaveBeenCalledOnce();
   });
 
   it("shows the AI error when reevaluation fails", async () => {
